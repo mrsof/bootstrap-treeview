@@ -57,6 +57,8 @@
 		showIcon: true,
 		showCheckbox: false,
 		showTags: false,
+        showTooltip: false,
+	    tooltipPlacement: 'top',
 		multiSelect: false,
 
 		// Event handlers
@@ -498,7 +500,12 @@
 		this.$element.empty().append(this.$wrapper.empty());
 
 		// Build tree
+			self.nodes = [];
 		this.buildTree(this.tree, 0);
+
+			if (self.options.showTooltip) {
+			    self.$wrapper.find('li[title]').tooltip();
+			}
 	};
 
 	// Starting from the root node, and recursing down the
@@ -518,6 +525,8 @@
 				.addClass(node.state.selected ? 'node-selected' : '')
 				.addClass(node.searchResult ? 'search-result' : '') 
 				.attr('data-nodeid', node.nodeId)
+                    .attr('title', node.tooltip)
+                    .attr('data-placement', self.options.tooltipPlacement)
 				.attr('style', _this.buildStyleOverride(node));
 
 			// Add indent/spacer to mimic tree structure
